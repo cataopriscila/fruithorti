@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -6,9 +6,8 @@ import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 
 const Header = ({ alphabeticalOrder }) => {
-  const [buttonState, setButtonState] = useState("outlined");
-
-  return (
+  
+   return (
     <Box
       sx={{
         bgcolor: "background.paper",
@@ -42,12 +41,10 @@ const Header = ({ alphabeticalOrder }) => {
           spacing={2}
           justifyContent="center"
         >
-          <Button  variant="contained">See nutritions table</Button>
-          <div onClick={() => setButtonState("disabled")}>
-            <Button onClick={alphabeticalOrder} variant={buttonState}>
-              Alphabetical order
-            </Button>
-          </div>
+          <Button onClick={alphabeticalOrder} variant="contained">All fruits</Button>
+          <Button onClick={alphabeticalOrder} variant="outlined" >
+            Alphabetical order
+          </Button>
         </Stack>
       </Container>
     </Box>

@@ -5,27 +5,34 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
-import {CircularProgress, Typography} from "@mui/material";
+import { CircularProgress, Typography} from "@mui/material";
 import unsplash from "../api/unsplash";
+import NutritionPopup from "./NutritionPopup";
 
 const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
-  const [fruitDetails, setFruitDetails] = useState(null);   
+  const [fruitDetails, setFruitDetails] = useState(fruit);  
+  const [nutriFacts, setNutriFacts] = useState([]);
 
-  useEffect(() => { 
-    console.log('useEffect from fruitCard')
+ useEffect(()=> {
+   
+  if(fruit.nutritions){
+    setNutriFacts(Object.entries(fruit.nutritions).map(nutri => nutri.join(': ')));
+  }
+ },[fruit.nutritions])
+  
+  useEffect(() => {  
+     
     if(fruit.name) {
       unsplash
       .get("/search/photos", {
         params: { query: fruit.name },
-      })
-      .then((response) => {setFruitDetails({...response.data.results[0], name: fruit.name, nutritions: fruit.nutritions})}); 
+      }).then((response) => {setFruitDetails(prev => ({...prev,...response.data.results[0]}))}); 
     }   
-        
-  }, [fruit.name, fruit.nutritions]);
+  }, [fruit.name]);
 
-  return ( 
+   return ( 
     <>
-     {fruitDetails?
+     {fruitDetails.urls?
       ( 
         <Grid item xs={12} sm={6} md={4}>    
         <Card
@@ -38,7 +45,6 @@ const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
           <CardMedia
             component="img"
             sx={{
-              // 16:9
               pt: "10%",
               height: "200px",
             }}
@@ -53,14 +59,16 @@ const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
             <Typography>{fruitDetails.alt_description}</Typography>            
           </CardContent>
           <CardActions>
-            <Button onClick={() => addToCart(fruitDetails)} size="small">Add</Button>
-            <Button onClick={()=> onRouteChange('checkout')} size="small">Checkout</Button>
+            <Button onClick={() => addToCart(fruit)} size="small">Add</Button>
+            <Button onClick={()=> onRouteChange('cart')} size="small">Cart</Button>
+            <NutritionPopup fruitDetails={fruitDetails} nutriFacts={nutriFacts} />
+           
           </CardActions>
         </Card>
       </Grid>
      )
       :
-      (<Grid item xs={12} sm={6} md={4}><CircularProgress/></Grid> )
+      (<Grid item xs={12} sm={6} md={4}><CircularProgress/></Grid>)
     } 
     </>   
       

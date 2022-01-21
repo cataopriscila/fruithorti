@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import * as React from "react";
 
 import CssBaseline from "@mui/material/CssBaseline";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./components/NavBar";
 import Dropdown from "./components/Dropdown";
-
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Fruitlist from "./components/FruitList";
+import FruitSelected from "./components/FruitSelected";
+
+
 
 const theme = createTheme({
   components: {
@@ -24,13 +25,14 @@ const theme = createTheme({
 });
 
 function App() {
-  const [fruits, setFruits] = useState([]);
+  const [fruits, setFruits] = useState([]);  
+  const [selectedFruit, setSelectedFruit] = useState([]);
   const [route, setRoute] = useState("fruitlist");
   const [cart, setCart] = useState([]);
 
   const addToCart = (fruit) => {
     setCart([...cart, fruit]);
-    console.log(fruit);
+    console.log('addToCart',fruit);
   };
 
   const onRouteChange = (route) => {
@@ -47,18 +49,35 @@ function App() {
     }
   };
 
-  const alphabeticalOrder = () => {
-    const orderedFruits = fruits.sort((a, b) => a.name.localeCompare(b.name));
-    setFruits(prevstate => ([...prevstate, orderedFruits]));
-  }  
-
-  useEffect(() => {
-    console.log('useEffect from app')
+   
+  const alphabeticalOrder = () => { 
     fetch("http://localhost:3000/")
       .then((response) => response.json())
-      .then((data) => setFruits(data.sort((a, b) => a.id - b.id)));
-  }, []);
+      .then((data) => setFruits(data.sort((a, b) => a.name.localeCompare(b.name)).map(fruit => Object.assign(fruit, {label: fruit.name}))))
+      .catch(err => console.log(err, 'Unable to work with API'))             
+  } 
   
+  const onFruitSelect = (input) => {    
+    const selected = fruits.filter(fruit => fruit.name === input);  
+    if(input){
+      setFruits(selected); 
+    }     
+   }
+
+  const onDropdownClick = () => {
+    setFruits(fruits);
+  } 
+   
+
+  
+  useEffect(() => {     
+    fetch("http://localhost:3000/")
+      .then((response) => response.json())
+      .then((data) => setFruits(data.sort((a, b) => a.id - b.id).map(fruit => Object.assign(fruit, {label: fruit.name}))))
+      .catch(err => console.log(err, 'Unable to work with API'))      
+  }, []);
+
+ 
  
 
   return (
@@ -68,7 +87,8 @@ function App() {
         <Navbar />
         <Header alphabeticalOrder={alphabeticalOrder} />
         <main>         
-            <Dropdown fruits={fruits} />          
+          <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} onDropdownClick={onDropdownClick} />
+          <FruitSelected selectedFruit={selectedFruit} />   
           <Fruitlist fruits={fruits} onRouteChange={onRouteChange} addToCart={addToCart} />            
         </main>
         <Footer />
