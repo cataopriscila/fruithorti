@@ -116,14 +116,14 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navbar onRouteChange={onRouteChange} />
-        <main>
-          <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} />
+        <main>          
           {route === "fruitlist" ? (
             <Home
               alphabeticalOrder={alphabeticalOrder}
               fruits={fruits}
               onRouteChange={onRouteChange}
               addToCart={addToCart}
+              onFruitSelect={onFruitSelect}
               text="List of Fruits"
               subtext="Pick up the fruits of your choice and add it to the cart and then head to the
             checkout."

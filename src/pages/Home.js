@@ -1,4 +1,5 @@
 import React from "react";
+import Dropdown from "../components/Dropdown";
 import Fruitlist from "../components/FruitList";
 import Header from "../components/Header";
 
@@ -9,6 +10,7 @@ const Home = ({
   fruits,
   onRouteChange,
   addToCart,
+  onFruitSelect
 }) => {
   return (
     <>
@@ -19,6 +21,7 @@ const Home = ({
         alphabeticalOrder={alphabeticalOrder}
         buttonText={["All fruits","Alphabetical order"]}
       />
+      <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} />
       <Fruitlist
         fruits={fruits}
         onRouteChange={onRouteChange}
