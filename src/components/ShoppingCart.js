@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import Payment from "./Payment";
 
 export default function ShoppingCart({ cart, emptyCart, deleteItemFromCart }) {
   const [checkoutList, setCheckoutList] = useState([]);
@@ -197,9 +198,10 @@ export default function ShoppingCart({ cart, emptyCart, deleteItemFromCart }) {
               borderRadius: "8px",
             }}
           >{`Total amount: $ ${Number(total).toFixed(2)}`}</Typography>
-          <Button variant="contained" color="primary" size="medium">
+          <Payment/>
+          {/* <Button variant="contained" color="primary" size="medium">
             Go to Payment
-          </Button>
+          </Button> */}
         </Box>
       </Container>
     </>

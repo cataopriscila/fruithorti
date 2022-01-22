@@ -129,13 +129,16 @@ function App() {
             checkout."
             />
           ) : (
-            <CheckoutPage
+            <>
+              <CheckoutPage
               cart={cart}              
               emptyCart={emptyCart}
               deleteItemFromCart={deleteItemFromCart}
               text="Shopping Cart"
               subtext="Add, remove or delete items from your list"
-            />
+            />            
+            </>
+            
           )}
         </main>
         <Footer />

@@ -20,7 +20,7 @@ const Footer = () => {
   return (
     <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
       <Typography variant="h6" align="center" gutterBottom>
-        This is FruitHorti: from farm, for you!
+        This is FruitHorti: from the farm, all for you!
       </Typography>
       <Typography
         variant="subtitle1"
