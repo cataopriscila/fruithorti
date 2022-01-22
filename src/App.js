@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./components/NavBar";
 import Dropdown from "./components/Dropdown";
 import Footer from "./components/Footer";
-import CheckoutPage from "./pages/ChecktoutPage";
+import CheckoutPage from "./pages/CheckoutPage";
 import Home from "./pages/Home";
 
 const theme = createTheme({
@@ -116,7 +116,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navbar onRouteChange={onRouteChange} />
-
         <main>
           <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} />
           {route === "fruitlist" ? (
@@ -131,8 +130,7 @@ function App() {
             />
           ) : (
             <CheckoutPage
-              cart={cart}
-              setCart={setCart}
+              cart={cart}              
               emptyCart={emptyCart}
               deleteItemFromCart={deleteItemFromCart}
               text="Shopping Cart"

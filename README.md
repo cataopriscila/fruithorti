@@ -18,13 +18,23 @@ You will also see any lint errors in the console.
 
 Once you're in, you can start shopping! Here you can: 
 
-- See the list of all fruits;
+- See the list of all fruits (also in alphabetical order);
 - Search items by name;
 - Add items to the shopping cart.
-- Go to cart by clicking on the 'Checkout' button;
+- Head to checkout by clicking on the 'Cart' button;
+- See the nutritions info by clicking on the "Info" button;
 
-When you're all set, click on the 'Checkout' button and head to the Shopping Cart.
-There, you can confirm all selected items, alter their quantities, delete items or reset your shopping cart content.
+When you're all set, click on the 'Cart' button inside each fruit card or 
+click on the "Shopping Cart" button at the Menu Bar, and head to the Shopping Cart.
+There, you can see all selected items, alter their quantities, delete items or reset your shopping cart content.
 
 Click on the 'Payment options' button and that's 
 it! You've done your shopping for today!
+
+## Troubleshooting
+
+If you have any trouble fetching URL from the given API, please copy the
+fruithorti-api repository to serve this app!
+
+### Hope you enjoy it!
+## Happy coding!

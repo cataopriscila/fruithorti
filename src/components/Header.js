@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 
-const Header = ({ alphabeticalOrder, hasButton, text, subtext }) => {
-  
-   return (
+//Reusable Header Component
+const Header = ({ alphabeticalOrder, hasButton, text, subtext, buttonText }) => {
+  return (
     <Box
       sx={{
         bgcolor: "background.paper",
@@ -36,18 +36,21 @@ const Header = ({ alphabeticalOrder, hasButton, text, subtext }) => {
         </Typography>
         {hasButton ? (
           <Stack
-          sx={{ pt: 4 }}
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-        >
-          <Button onClick={alphabeticalOrder} variant="contained">All fruits</Button>
-          <Button onClick={alphabeticalOrder} variant="outlined" >
-            Alphabetical order
-          </Button>
-        </Stack>
-        ): (<div/>)}
-        
+            sx={{ pt: 4 }}
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+          >
+            <Button onClick={alphabeticalOrder} variant="contained">
+              {buttonText[0]}
+            </Button>
+            <Button onClick={alphabeticalOrder} variant="outlined">
+              {buttonText[1]}
+            </Button>
+          </Stack>
+        ) : (
+          <div />
+        )}
       </Container>
     </Box>
   );

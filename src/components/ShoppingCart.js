@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Button, Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-export default function ShoppingCart({ cart, setCart,  emptyCart, deleteItemFromCart }) {
+export default function ShoppingCart({ cart, emptyCart, deleteItemFromCart }) {
   const [checkoutList, setCheckoutList] = useState([]);
   const [total, setTotal] = useState("0");
 
@@ -91,6 +91,7 @@ export default function ShoppingCart({ cart, setCart,  emptyCart, deleteItemFrom
     },
   ];
 
+  //Add 1 item to the Cart
   const addItemButton = (name) => {
     const itemsArr = checkoutList.map((item) => {
       if (item.name === name) {
@@ -104,8 +105,9 @@ export default function ShoppingCart({ cart, setCart,  emptyCart, deleteItemFrom
     setCheckoutList(itemsArr);
   };
 
+  //Remove 1 item from the Cart
   const removeItemButton = (name) => {
-    setCheckoutList(prev => 
+    setCheckoutList((prev) =>
       prev.map((item) => {
         if (item.name === name && parseInt(item.quantity) !== 0) {
           return Object.assign(item, {
@@ -117,20 +119,24 @@ export default function ShoppingCart({ cart, setCart,  emptyCart, deleteItemFrom
       })
     );
   };
-    const deleteItem = (name) => {
-      let update = prev => prev.filter(item => !(item.name === name))
-      
-        setTimeout(()=> {
-            setCheckoutList(update);            
-           deleteItemFromCart(update);           
-        },[],)              
+
+  //Delete 1 item from the Cart
+  //Update cart after deletion
+  const deleteItem = (name) => {
+    let update = (prev) => prev.filter((item) => !(item.name === name));
+
+    setTimeout(() => {
+      setCheckoutList(update);
+      deleteItemFromCart(update);
+    }, []);
   };
-  
-  
-  useEffect(() => {    
+
+  //Update the checkout list from the Cart
+  useEffect(() => {
     setCheckoutList(cart);
   }, [cart]);
 
+  //Update the total amount
   useEffect(() => {
     let allTotal = checkoutList.reduce(
       (acc, fruit) => acc + fruit.totalPrice,
