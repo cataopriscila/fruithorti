@@ -9,33 +9,41 @@ export default function ShoppingCart({ cart, emptyCart }) {
   const [total, setTotal] = useState("0");
 
   const addItemButton = (name) => {
-    const fruit = checkoutList.map((fruit) => {
-      if (fruit.name === name) {
-        return Object.assign(fruit, {
-          quantity: fruit.quantity + 1,
-          totalPrice: fruit.totalPrice + fruit.price,
+    const itemsArr = checkoutList.map((item) => {
+      if (item.name === name) {
+        return Object.assign(item, {
+          quantity: item.quantity + 1,
+          totalPrice: item.totalPrice + item.price,
         });
       }
-      return fruit;
+      return item;
     });
-    setCheckoutList(fruit);
+    setCheckoutList(itemsArr);
   };
 
   const removeItemButton = (name) => {
-    setCheckoutList(
-      checkoutList.map((fruit) => {
-        if (fruit.name === name && parseInt(fruit.quantity) !== 0) {
-          return Object.assign(fruit, {
-            quantity: fruit.quantity - 1,
-            totalPrice: fruit.totalPrice - fruit.price,
+    setCheckoutList(prev => 
+      prev.map((item) => {
+        if (item.name === name && parseInt(item.quantity) !== 0) {
+          return Object.assign(item, {
+            quantity: item.quantity - 1,
+            totalPrice: item.totalPrice - item.price,
           });
         }
-        return fruit;
+        return item;
       })
     );
   };
-
-  const deleteItem = () => {};
+    const deleteItem = (name) => {
+        setTimeout(()=> {
+            setCheckoutList(prev=> prev.filter(item => !(item.name === name)));
+        })
+      
+      console.log('lentgh checkoutlist', checkoutList.length)
+      if(checkoutList.length === 1){
+          emptyCart();
+      }
+  };
 
   const columns = [
     {
@@ -108,7 +116,7 @@ export default function ShoppingCart({ cart, emptyCart }) {
         <strong>
           {params.value}
           <Button
-            onClick={deleteItem}
+            onClick={() => deleteItem(params.row.name)}
             variant="outlined"
             color="primary"
             size="small"
@@ -129,7 +137,7 @@ export default function ShoppingCart({ cart, emptyCart }) {
       (acc, fruit) => acc + fruit.totalPrice,
       0
     );
-    setTotal(allTotal);    
+    setTotal(allTotal);
   }, [checkoutList]);
 
   return (
@@ -148,7 +156,7 @@ export default function ShoppingCart({ cart, emptyCart }) {
             Shopping Cart
           </h1>
         </div>
-        <div style={{ height: "70vh", width: "100%" }}>
+        <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
             rows={checkoutList}
             columns={columns}
@@ -168,7 +176,12 @@ export default function ShoppingCart({ cart, emptyCart }) {
             padding: "25px",
           }}
         >
-          <Button onClick={emptyCart} variant="outlined" color="primary" size="medium">
+          <Button
+            onClick={emptyCart}
+            variant="outlined"
+            color="primary"
+            size="medium"
+          >
             Empty cart
           </Button>
           <Typography
