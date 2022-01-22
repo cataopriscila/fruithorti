@@ -12,6 +12,13 @@ import NutritionPopup from "./NutritionPopup";
 const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
   const [fruitDetails, setFruitDetails] = useState(fruit);  
   const [nutriFacts, setNutriFacts] = useState([]);
+  const [fruitToBeAdded, setFruitToBeAdded] = useState(true);
+
+
+  const handleClick = () => {
+    setFruitToBeAdded(false);
+    addToCart(fruitDetails);
+  }
 
  useEffect(()=> {
    
@@ -59,7 +66,12 @@ const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
             <Typography>{fruitDetails.alt_description}</Typography>            
           </CardContent>
           <CardActions>
-            <Button onClick={() => addToCart(fruit)} size="small">Add</Button>
+          {fruitToBeAdded? 
+            <Button onClick={handleClick} size="small">Add</Button>
+            :
+            <Button variant="disabled" size="small">Added</Button>
+          }
+            
             <Button onClick={()=> onRouteChange('cart')} size="small">Cart</Button>
             <NutritionPopup fruitDetails={fruitDetails} nutriFacts={nutriFacts} />
            

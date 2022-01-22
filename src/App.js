@@ -8,9 +8,7 @@ import Dropdown from "./components/Dropdown";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Fruitlist from "./components/FruitList";
-import FruitSelected from "./components/FruitSelected";
-
-
+import ShoppingCart from "./components/ShoppingCart";
 
 const theme = createTheme({
   components: {
@@ -26,13 +24,18 @@ const theme = createTheme({
 
 function App() {
   const [fruits, setFruits] = useState([]);  
-  const [selectedFruit, setSelectedFruit] = useState([]);
   const [route, setRoute] = useState("fruitlist");
   const [cart, setCart] = useState([]);
 
-  const addToCart = (fruit) => {
-    setCart([...cart, fruit]);
-    console.log('addToCart',fruit);
+  const addToCart = (fruit) => {       
+    setCart([...cart, {...fruit, quantity: 1, price: fruit.width * 0.001, totalPrice: fruit.width * 0.001 }]);
+    console.log('addToCart', cart);    
+    
+  };
+
+    const emptyCart = () => {
+    setFruits(fruits);
+    setCart([]);
   };
 
   const onRouteChange = (route) => {
@@ -87,9 +90,10 @@ function App() {
         <Navbar />
         <Header alphabeticalOrder={alphabeticalOrder} />
         <main>         
-          <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} onDropdownClick={onDropdownClick} />
-          <FruitSelected selectedFruit={selectedFruit} />   
-          <Fruitlist fruits={fruits} onRouteChange={onRouteChange} addToCart={addToCart} />            
+          <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} onDropdownClick={onDropdownClick} />            
+          <Fruitlist fruits={fruits} onRouteChange={onRouteChange} addToCart={addToCart} /> 
+          
+          <ShoppingCart cart={cart} emptyCart={emptyCart}/>           
         </main>
         <Footer />
       </ThemeProvider>
