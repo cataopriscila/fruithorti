@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 
-const Header = ({ alphabeticalOrder }) => {
+const Header = ({ alphabeticalOrder, hasButton, text, subtext }) => {
   
    return (
     <Box
@@ -24,7 +24,7 @@ const Header = ({ alphabeticalOrder }) => {
           sx={{ margin: 5 }}
           gutterBottom
         >
-          List of Fruits
+          {text}
         </Typography>
         <Typography
           variant="h5"
@@ -32,10 +32,10 @@ const Header = ({ alphabeticalOrder }) => {
           color="text.secondary"
           paragraph
         >
-          Pick up the fruits of your choice and add it to cart and then head to
-          checkout.{" "}
+          {subtext}
         </Typography>
-        <Stack
+        {hasButton ? (
+          <Stack
           sx={{ pt: 4 }}
           direction="row"
           spacing={2}
@@ -46,6 +46,8 @@ const Header = ({ alphabeticalOrder }) => {
             Alphabetical order
           </Button>
         </Stack>
+        ): (<div/>)}
+        
       </Container>
     </Box>
   );

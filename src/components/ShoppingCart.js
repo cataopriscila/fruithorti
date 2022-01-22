@@ -4,46 +4,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Button, Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-export default function ShoppingCart({ cart, emptyCart }) {
+export default function ShoppingCart({ cart, setCart,  emptyCart, deleteItemFromCart }) {
   const [checkoutList, setCheckoutList] = useState([]);
   const [total, setTotal] = useState("0");
-
-  const addItemButton = (name) => {
-    const itemsArr = checkoutList.map((item) => {
-      if (item.name === name) {
-        return Object.assign(item, {
-          quantity: item.quantity + 1,
-          totalPrice: item.totalPrice + item.price,
-        });
-      }
-      return item;
-    });
-    setCheckoutList(itemsArr);
-  };
-
-  const removeItemButton = (name) => {
-    setCheckoutList(prev => 
-      prev.map((item) => {
-        if (item.name === name && parseInt(item.quantity) !== 0) {
-          return Object.assign(item, {
-            quantity: item.quantity - 1,
-            totalPrice: item.totalPrice - item.price,
-          });
-        }
-        return item;
-      })
-    );
-  };
-    const deleteItem = (name) => {
-        setTimeout(()=> {
-            setCheckoutList(prev=> prev.filter(item => !(item.name === name)));
-        })
-      
-      console.log('lentgh checkoutlist', checkoutList.length)
-      if(checkoutList.length === 1){
-          emptyCart();
-      }
-  };
 
   const columns = [
     {
@@ -128,7 +91,43 @@ export default function ShoppingCart({ cart, emptyCart }) {
     },
   ];
 
-  useEffect(() => {
+  const addItemButton = (name) => {
+    const itemsArr = checkoutList.map((item) => {
+      if (item.name === name) {
+        return Object.assign(item, {
+          quantity: item.quantity + 1,
+          totalPrice: item.totalPrice + item.price,
+        });
+      }
+      return item;
+    });
+    setCheckoutList(itemsArr);
+  };
+
+  const removeItemButton = (name) => {
+    setCheckoutList(prev => 
+      prev.map((item) => {
+        if (item.name === name && parseInt(item.quantity) !== 0) {
+          return Object.assign(item, {
+            quantity: item.quantity - 1,
+            totalPrice: item.totalPrice - item.price,
+          });
+        }
+        return item;
+      })
+    );
+  };
+    const deleteItem = (name) => {
+      let update = prev => prev.filter(item => !(item.name === name))
+      
+        setTimeout(()=> {
+            setCheckoutList(update);            
+           deleteItemFromCart(update);           
+        },[],)              
+  };
+  
+  
+  useEffect(() => {    
     setCheckoutList(cart);
   }, [cart]);
 
@@ -142,7 +141,7 @@ export default function ShoppingCart({ cart, emptyCart }) {
 
   return (
     <>
-      <Container sx={{ py: 8 }} maxWidth="md">
+      <Container id="shoppingcart" sx={{ py: 8 }} maxWidth="md">
         <div>
           <hr />
           <h1
@@ -153,7 +152,7 @@ export default function ShoppingCart({ cart, emptyCart }) {
               margin: "40px",
             }}
           >
-            Shopping Cart
+            Your Cart
           </h1>
         </div>
         <div style={{ height: "60vh", width: "100%" }}>

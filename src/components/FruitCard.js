@@ -15,9 +15,9 @@ const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
   const [fruitToBeAdded, setFruitToBeAdded] = useState(true);
 
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     setFruitToBeAdded(false);
-    addToCart(fruitDetails);
+    addToCart(fruitDetails, e);
   }
 
  useEffect(()=> {
@@ -67,12 +67,12 @@ const FruitCard = ({ fruit, onRouteChange, addToCart }) => {
           </CardContent>
           <CardActions>
           {fruitToBeAdded? 
-            <Button onClick={handleClick} size="small">Add</Button>
+            <Button onClick={(e) => handleClick(e)} size="small">Add</Button>
             :
             <Button variant="disabled" size="small">Added</Button>
           }
             
-            <Button onClick={()=> onRouteChange('cart')} size="small">Cart</Button>
+            <Button onClick={()=> onRouteChange('shoppingcart')} size="small">Cart</Button>
             <NutritionPopup fruitDetails={fruitDetails} nutriFacts={nutriFacts} />
            
           </CardActions>

@@ -3,10 +3,10 @@ import FruitCard from './FruitCard';
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 
-const Fruitlist = ({fruits,  onRouteChange, addToCart}) => {
+const Fruitlist = ({fruits, onRouteChange, addToCart}) => {
   
     return (
-        <Container sx={{ py: 8 }} maxWidth="md"> 
+        <Container id="fruitlist" sx={{ py: 8 }} maxWidth="md"> 
            <Grid container spacing={5}>
             {fruits.map(fruit => (
                 <FruitCard

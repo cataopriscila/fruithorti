@@ -2,28 +2,24 @@ import * as React from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 
-function handleClick(event) {
-  event.preventDefault();
-  console.log('You clicked a breadcrumb.');
-}
 
-export default function Menu() {
+
+export default function Menu({onRouteChange}) {
+  const handleClick = (event) => {
+    event.preventDefault();
+    onRouteChange(event.target.id);
+  }
+
   return (
-    <div role="presentation" onClick={handleClick}>
+    <div role="presentation" onClick={handleClick} >
       <Breadcrumbs aria-label="breadcrumb" sx={{color: 'white'}}>
-        <Link underline="hover" color="inherit" href="/">
+        <Link id="fruitlist" underline="hover" color="inherit" href="/#fruitlist">
           Fruits
-        </Link>
+        </Link>        
         <Link
-          underline="hover" 
-          color="inherit"         
-          href="/getting-started/installation/"
-        >
-          Calories
-        </Link>
-        <Link
+          id="shoppingcart"
           underline="hover"          
-          href="/components/breadcrumbs/"
+          href="#shoppingcart"
           color="inherit"
           aria-current="page"
         >

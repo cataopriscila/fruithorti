@@ -6,9 +6,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./components/NavBar";
 import Dropdown from "./components/Dropdown";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Fruitlist from "./components/FruitList";
-import ShoppingCart from "./components/ShoppingCart";
+
+
+
+import CheckoutPage from "./pages/ChecktoutPage";
+import Home from "./pages/Home";
 
 const theme = createTheme({
   components: {
@@ -23,77 +25,123 @@ const theme = createTheme({
 });
 
 function App() {
-  const [fruits, setFruits] = useState([]);  
+  const [fruits, setFruits] = useState([]);
   const [route, setRoute] = useState("fruitlist");
   const [cart, setCart] = useState([]);
 
-  const addToCart = (fruit) => {       
-    setCart([...cart, {...fruit, quantity: 1, price: fruit.width * 0.001, totalPrice: fruit.width * 0.001 }]);
-    console.log('addToCart', cart);    
+  //Add fruit to Shopping Cart
+  const addToCart = (fruit, e) => { 
+    const fruitAlreadyAdded = (value => value.id === fruit.id);
+        
+    if(cart.some(fruitAlreadyAdded)) {
+      e.preventDefault();
+    } else {
+      setCart([
+        ...cart,
+        {
+          ...fruit,
+          quantity: 1,
+          price: fruit.width * 0.001,
+          totalPrice: fruit.width * 0.001,
+        },
+      ]);
+    }  
     
   };
 
-    const emptyCart = () => {
+  //Remove all items from Shopping Cart
+  const emptyCart = () => {
     setFruits(fruits);
     setCart([]);
   };
 
+  //Remove items from Shopping Cart individually
+  const deleteItemFromCart = (checkout) => {
+    setCart(checkout);         
+};
+ 
+  //Change App routes
   const onRouteChange = (route) => {
     switch (route) {
       case "fruitlist":
         setRoute("fruitlist");
-        return null;
-      case "checkout":
-        setRoute("checkout");
-        return null;
+        break;
 
+      case "shoppingcart":
+        setRoute("shoppingcart");        
+        break;
       default:
-        return "Route issues. Please Refresh the page";
+        return <h1>Route issues. Please Refresh the page</h1>;
     }
   };
 
-   
-  const alphabeticalOrder = () => { 
-    fetch("http://localhost:3000/")
+  //Order fruit list alphabetically
+  const alphabeticalOrder = () => {
+    fetch("http://localhost:3000")
       .then((response) => response.json())
-      .then((data) => setFruits(data.sort((a, b) => a.name.localeCompare(b.name)).map(fruit => Object.assign(fruit, {label: fruit.name}))))
-      .catch(err => console.log(err, 'Unable to work with API'))             
-  } 
+      .then((data) =>
+        setFruits(
+          data
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((fruit) => Object.assign(fruit, { label: fruit.name }))
+        )
+      )
+      .catch((err) => console.log(err, "Unable to work with API"));
+  };
   
-  const onFruitSelect = (input) => {    
-    const selected = fruits.filter(fruit => fruit.name === input);  
-    if(input){
-      setFruits(selected); 
-    }     
-   }
+  //Select fruit from Dropdown
+  const onFruitSelect = (input) => {
+    const selected = fruits.filter((fruit) => fruit.name === input);
+    if (input) {
+      setFruits(selected);
+    }
+  };
 
-  const onDropdownClick = () => {
-    setFruits(fruits);
-  } 
-   
+  useEffect(() => {
 
-  
-  useEffect(() => {     
-    fetch("http://localhost:3000/")
+    //Fetch fruit list from API
+    fetch("http://localhost:3000")
       .then((response) => response.json())
-      .then((data) => setFruits(data.sort((a, b) => a.id - b.id).map(fruit => Object.assign(fruit, {label: fruit.name}))))
-      .catch(err => console.log(err, 'Unable to work with API'))      
+      .then((data) =>
+        setFruits(
+          data
+            .sort((a, b) => a.id - b.id)
+            .map((fruit) => Object.assign(fruit, { label: fruit.name }))
+        )
+      )
+      .catch((err) => console.log(err, "Unable to work with API"));
   }, []);
-
- 
- 
 
   return (
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar />
-        <Header alphabeticalOrder={alphabeticalOrder} />
-        <main>         
-          <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} onDropdownClick={onDropdownClick} />            
-          <Fruitlist fruits={fruits} onRouteChange={onRouteChange} addToCart={addToCart} /> 
-          
-          <ShoppingCart cart={cart} emptyCart={emptyCart}/>           
+        <Navbar onRouteChange={onRouteChange} />
+
+        <main>
+          <Dropdown fruits={fruits} onFruitSelect={onFruitSelect} />
+          {route === "fruitlist" ? (            
+              <Home
+                alphabeticalOrder={alphabeticalOrder}
+                fruits={fruits}
+                onRouteChange={onRouteChange}
+                addToCart={addToCart}
+
+                text="List of Fruits"
+                subtext="Pick up the fruits of your choice and add it to the cart and then head to the
+            checkout."
+              />              
+            
+          ) : (
+            <CheckoutPage
+              cart={cart}
+              setCart={setCart}
+              emptyCart={emptyCart}
+              deleteItemFromCart={ deleteItemFromCart }
+              text="Shopping Cart"
+              subtext="Add, remove or delete items from your list"
+            />
+          )}
         </main>
         <Footer />
       </ThemeProvider>
