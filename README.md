@@ -34,7 +34,7 @@ it! You've done your shopping for today!
 ## Troubleshooting
 
 If you have any trouble fetching URL from the given API, please copy the
-fruithorti-api repository to serve this app!
+fruithorti-api repository at [Link text Here](https://github.com/cataopriscila/fruithorti-api) to serve this app!
 
 ### Hope you enjoy it!
 ## Happy coding!
